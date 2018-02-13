@@ -34,8 +34,8 @@ public class Jabberwock extends Driver {
     // ---------------- compute target speed ----------------------
 
     // very basic behaviour. stay safe
-    double targetSpeed = 75;
-
+    double targetSpeed = 300;
+    
     /*
      * ----------------------- control velocity --------------------
      */
@@ -51,7 +51,24 @@ public class Jabberwock extends Driver {
     // ------------------- control gear ------------------------
 
     // go in second gear
-    action.gear = 2;
+    if (m.speed < 50) {
+      action.gear = 1;
+    } 
+    else if (m.speed < 90){
+      action.gear = 2;
+    } 
+    else if (m.speed < 150){
+      action.gear = 3;
+    } 
+    else if (m.speed < 190){
+      action.gear = 4;
+    }   
+    else if (m.speed < 220){
+      action.gear = 5;
+    }  
+    else if (m.speed < 270){
+      action.gear = 6;
+    }  
 
     /*
      * ----------------------- control steering ---------------------
@@ -59,18 +76,48 @@ public class Jabberwock extends Driver {
 
     double distanceLeft = m.trackEdgeSensors[0];
     double distanceRight = m.trackEdgeSensors[18];
+    double distanceAhead = m.trackEdgeSensors[9];
     
     // follow the track
     action.steering = m.angleToTrackAxis * 0.75;
 
     // avoid to come too close to the edges
-    if (distanceLeft < 3.0) {
+    if (distanceLeft <5) {
       action.steering -= (5.0 - distanceLeft) * 0.05;
+       
     }
-    if (distanceRight < 3.0) {
+   
+    if (distanceRight < 5) {
       action.steering += (5.0 - distanceRight) * 0.05;
+       
     }
-
+    
+    
+    
+    if (distanceAhead < 32){
+      action.gear = 1; }
+      else if (distanceAhead < 90 ){
+       action.gear = 2;  }
+       else if (distanceAhead < 120) {
+           action.gear = 3;}
+         else if (distanceAhead < 150) {
+             action.gear = 4; }
+            else if (distanceAhead < 170) {
+             action.gear = 5; }
+            else if (distanceAhead < 190) {
+             action.gear = 6;
+          } // end of if
+         // end of if
+        
+        
+        
+        
+     
+   
+    
+     
+    
+     
     // return the action
     return action;
   }
